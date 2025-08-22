@@ -572,7 +572,7 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
     with pd.ExcelWriter(out, engine="xlsxwriter") as writer:
         df.to_excel(writer, index=False, sheet_name="Integrated_Data")
         summary_data = {
-            "Metric": ["Unique Booking IDs", "Files Processed", "Processing Date"],
+            "Metric": ["Total Records", "Unique Booking IDs", "Files Processed", "Processing Date"],
             "Value": [len(df), df["Booking ID"].nunique(), len(file_utama_list), datetime.now().strftime("%Y-%m-%d %H:%M")]
         }
         pd.DataFrame(summary_data).to_excel(writer, index=False, sheet_name="Summary")
@@ -596,7 +596,7 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
     with pd.ExcelWriter(out, engine="xlsxwriter") as writer:
         df.to_excel(writer, index=False, sheet_name="Integrated_Data")
         summary_data = {
-            "Metric": [ "Unique Booking IDs", "Files Processed", "Processing Date"],
+            "Metric": ["Total Records", "Unique Booking IDs", "Files Processed", "Processing Date"],
             "Value": [len(df), df["Booking ID"].nunique(), len(file_utama_list), datetime.now().strftime("%Y-%m-%d %H:%M")]
         }
         pd.DataFrame(summary_data).to_excel(writer, index=False, sheet_name="Summary")

@@ -625,11 +625,6 @@ if not df_filtered.empty:
         box-shadow:0 4px 10px rgba(0,0,0,0.05);
     ">
         <h3 style="margin:0 0 1.2rem 0; color:#1e3a8a; text-align:center;">Export Data Overview</h3>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:0.8rem;">
-            <div style="background:white; border-radius:10px; padding:0.8rem; border:1px solid #e5e7eb; text-align:center;">
-                <div style="font-size:1.5rem;">📊</div>
-                <div style="font-size:0.85rem; color:#6b7280;">Total Records</div>
-                <div style="font-size:1.2rem; font-weight:700;">{len(df_filtered):,}</div>
             </div>
             <div style="background:white; border-radius:10px; padding:0.8rem; border:1px solid #e5e7eb; text-align:center;">
                 <div style="font-size:1.5rem;">🔖</div>

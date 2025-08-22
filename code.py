@@ -596,7 +596,7 @@ def to_excel_bytes(df: pd.DataFrame) -> bytes:
     with pd.ExcelWriter(out, engine="xlsxwriter") as writer:
         df.to_excel(writer, index=False, sheet_name="Integrated_Data")
         summary_data = {
-            "Metric": ["Unique Booking IDs", "Files Processed", "Processing Date"],
+            "Metric": [ "Unique Booking IDs", "Files Processed", "Processing Date"],
             "Value": [len(df), df["Booking ID"].nunique(), len(file_utama_list), datetime.now().strftime("%Y-%m-%d %H:%M")]
         }
         pd.DataFrame(summary_data).to_excel(writer, index=False, sheet_name="Summary")
@@ -625,7 +625,7 @@ if not df_filtered.empty:
         box-shadow:0 4px 10px rgba(0,0,0,0.05);
     ">
         <h3 style="margin:0 0 1.2rem 0; color:#1e3a8a; text-align:center;">Export Data Overview</h3>
-            </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:0.8rem;">
             <div style="background:white; border-radius:10px; padding:0.8rem; border:1px solid #e5e7eb; text-align:center;">
                 <div style="font-size:1.5rem;">🔖</div>
                 <div style="font-size:0.85rem; color:#6b7280;">Unique Booking IDs</div>
@@ -667,11 +667,11 @@ if not df_filtered.empty:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         if export_format == "Excel (.xlsx)":
             file_data = to_excel_bytes(df_filtered)
-            filename = f"supplier_mitra_data_{timestamp}.xlsx"
+            filename = f"narasight_data_{timestamp}.xlsx"
             mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         else:
             file_data = to_csv_bytes(df_filtered)
-            filename = f"supplier_mitra_data_{timestamp}.csv"
+            filename = f"narasight_data_{timestamp}.csv"
             mime_type = "text/csv"
 
         st.markdown("""
@@ -701,7 +701,7 @@ else:
 st.markdown("""
 <hr style="margin-top: 3rem; margin-bottom: 1rem; border: none; border-top: 1px solid #ccc;" />
 <div style='text-align: center; font-size: 0.85rem; color: gray;'>
-    📊 Aplikasi Data Relasional Excel | Dibuat dengan ❤️ oleh <a href='https://www.linkedin.com/in/rifyalt/'>Rifyal Tumber</a><br>
+    📊 Aplikasi Data Relasional | Dibuat dengan ❤️ oleh <a href='https://www.linkedin.com/in/rifyalt/'>Rifyal Tumber</a><br>
     © 2025 - Versi 1.0 | Hubungi +62 878 8103 3781 jika ada kendala teknis
 </div>
 """, unsafe_allow_html=True)

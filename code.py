@@ -9,7 +9,7 @@ from datetime import datetime
 
 # ====== CONFIG PAGE ======
 st.set_page_config(
-    page_title="Aplikasi Join Data | naratix",
+    page_title="Aplikasi Join Data | multiple join excel",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -80,7 +80,7 @@ st.markdown("""
 }
 </style>
 <div class="running-banner">
-    <span>🚀 Selamat datang di Naratix Data Integration Platform — Integrasi, Analisis, dan Visualisasi Data Lebih Cepat & Mudah! 📊</span>
+    <span>🚀 Aplikasi Ini Bertujuan Untuk Mengolah Data (Join+Pivot) Agar Lebih Cepat & Mudah! 📊</span>
 </div>
 """, unsafe_allow_html=True)
 
@@ -108,7 +108,7 @@ st.markdown("""
 }
 </style>
 <div class="custom-header">
-    <h1>🚀 Naratix Data Integration Platform</h1>
+    <h1>🚀 Data Integration Platform</h1>
     <p>Solusi Enterprise untuk Integrasi, Analisis, & Visualisasi Data</p>
 </div>
 """, unsafe_allow_html=True)

@@ -7,6 +7,294 @@ import os
 from io import BytesIO
 from datetime import datetime
 
+import streamlit as st
+import time
+
+# ===== USER CREDENTIALS =====
+USER_CREDENTIALS = {
+    "admin": "admin123",
+    "user1": "perta1",
+}
+
+# ===== SESSION LOGIN CHECK =====
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+if "username" not in st.session_state:
+    st.session_state.username = ""
+
+def apply_custom_css():
+    """Apply custom CSS for enhanced UI"""
+    st.markdown("""
+    <style>
+    /* Hide Streamlit default elements */
+    .stDeployButton {display:none;}
+    footer {visibility: hidden;}
+    .stDecoration {display:none;}
+    
+    /* Main container styling */
+    .main-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+    
+    /* Login card styling */
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Logo styling */
+    .logo {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    /* Title styling */
+    .login-title {
+        color: #2c3e50;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Input field styling */
+    .stTextInput > div > div > input {
+        border-radius: 12px;
+        border: 2px solid #e1e5e9;
+        padding: 12px 16px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .stTextInput > div > div > input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        outline: none;
+    }
+    
+    /* Button styling */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Success message styling */
+    .success-message {
+        background: linear-gradient(135deg, #11998e, #38ef7d);
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: 600;
+        animation: slideIn 0.5s ease-out;
+    }
+    
+    /* Error message styling */
+    .error-message {
+        background: linear-gradient(135deg, #ff6b6b, #ffa726);
+        color: white;
+        padding: 15px;
+        border-radius: 12px;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: 600;
+        animation: shake 0.5s ease-in-out;
+    }
+    
+    /* Animations */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    
+    /* Welcome section */
+    .welcome-section {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .welcome-text {
+        color: #5a67d8;
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+    
+    /* Footer */
+    .login-footer {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        color: #718096;
+        font-size: 0.9rem;
+    }
+    
+    /* Loading spinner */
+    .loading-spinner {
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #667eea;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+def login_page():
+    """Enhanced login page with modern UI"""
+    apply_custom_css()
+    
+    # Create centered container
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col2:
+        # Main login card
+        st.markdown("""
+        <div class="login-card">
+            <div class="logo">🚀</div>
+            <h1 class="login-title">narasight</h1>
+            <div class="welcome-section">
+                <p class="welcome-text">Selamat datang kembali! Silakan masuk ke akun Anda.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Input fields with enhanced styling
+        st.markdown("### 👤 Masukkan Kredensial Anda")
+        
+        username = st.text_input(
+            "Username", 
+            placeholder="Masukkan username Anda",
+            key="username_input"
+        )
+        
+        password = st.text_input(
+            "Password", 
+            type="password",
+            placeholder="Masukkan password Anda",
+            key="password_input"
+        )
+        
+        # Login button
+        col_btn1, col_btn2, col_btn3 = st.columns([1, 2, 1])
+        with col_btn2:
+            login_clicked = st.button("🔓 Masuk", key="login_btn", use_container_width=True)
+        
+        # Process login
+        if login_clicked:
+            if username and password:  # Check if fields are not empty
+                # Show loading
+                with st.spinner("Memverifikasi kredensial..."):
+                    time.sleep(1)  # Simulate processing time
+                
+                if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+                    st.session_state.logged_in = True
+                    st.session_state.username = username
+                    
+                    # Success message
+                    st.markdown(f"""
+                    <div class="success-message">
+                        ✅ Selamat datang, <strong>{username}</strong>! Anda berhasil masuk.
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    time.sleep(2)
+                    st.rerun()
+                else:
+                    # Error message
+                    st.markdown("""
+                    <div class="error-message">
+                        ❌ Username atau password salah. Silakan coba lagi.
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                st.markdown("""
+                <div class="error-message">
+                    ⚠️ Mohon lengkapi username dan password.
+                </div>
+                """, unsafe_allow_html=True)
+        
+        # Additional info
+        st.markdown("""
+        <div class="login-footer">
+            <p><strong>Demo Credentials:</strong></p>
+            <p>• Username: <code>admin</code> | Password: <code>admin123</code></p>
+            <p>• Username: <code>fandi</code> | Password: <code>0000129</code></p>
+            <p>• Username: <code>yaticuy</code> | Password: <code>3710239</code></p>
+            <p>• Username: <code>riega</code> | Password: <code>0000150</code></p>
+        </div>
+        """, unsafe_allow_html=True)
+
+def main_app():
+    """Main application after successful login"""
+    st.sidebar.success(f"👋 Halo, {st.session_state.username}!")
+    
+    if st.sidebar.button("🚪 Logout"):
+        st.session_state.logged_in = False
+        st.session_state.username = ""
+        st.rerun()
+    
+    st.title("🎉 Selamat Datang")
+    st.write(f"Halo **{st.session_state.username}**, Anda berhasil masuk ke aplikasi!")
+    
+    # Your main app content goes here
+    st.info("🚀 Aplikasi utama Anda dapat dimulai dari sini...")
+
+# ===== MAIN EXECUTION =====
+if not st.session_state.logged_in:
+    login_page()
+else:
+    main_app()
+
 # ====== CONFIG PAGE ======
 st.set_page_config(
     page_title="Aplikasi Join Data | multiple join excel",
